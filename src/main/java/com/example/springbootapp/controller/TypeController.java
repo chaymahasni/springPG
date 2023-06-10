@@ -27,12 +27,11 @@ public class TypeController {
     private TypeRepository typeRepository;
 
     @GetMapping("/tutorials/{tutorialId}/types")
-    public ResponseEntity<List<Type>> getAllTypesByTutorialId(@PathVariable(value = "tutorialId") Long tutorialId) {
+    public ResponseEntity<Type> getAllTypesByTutorialId(@PathVariable(value = "tutorialId") Long tutorialId) {
         Tutorial tutorial = tutorialRepository.findById(tutorialId)
                 .orElseThrow(() -> new ResourceNotFoundException("Not found Tutorial with id = " + tutorialId));
 
-        List<Type> types = new ArrayList<>(tutorial.getTypes());
-        return new ResponseEntity<>(types, HttpStatus.OK);
+        return new ResponseEntity<>(tutorial.getType(), HttpStatus.OK);
     }
 
     @GetMapping("/types/{id}")
@@ -42,17 +41,19 @@ public class TypeController {
 
         return new ResponseEntity<>(type, HttpStatus.OK);
     }
-
+/*
     @PostMapping("/tutorials/{tutorialId}/comments")
     public ResponseEntity<Type> createComment(@PathVariable(value = "tutorialId") Long tutorialId,
                                                  @RequestBody Type commentRequest) {
         Type type = tutorialRepository.findById(tutorialId).map(tutorial -> {
-            tutorial.getTypes().add(commentRequest);
+            tutorial.getType().add(commentRequest);
             return typeRepository.save(commentRequest);
         }).orElseThrow(() -> new ResourceNotFoundException("Not found Tutorial with id = " + tutorialId));
 
         return new ResponseEntity<>(type, HttpStatus.CREATED);
     }
+    */
+
     @PutMapping("/types/{id}")
     public ResponseEntity<Type> updateType(@PathVariable("id") long id, @RequestBody Type typeRequest) {
         Type type = typeRepository.findById(id)

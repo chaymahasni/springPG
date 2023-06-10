@@ -1,8 +1,15 @@
 package com.example.springbootapp.model;
 
+import lombok.*;
+
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter
+@Setter
 @Table(name = "types")
 public class Type {
     @Id
@@ -11,31 +18,7 @@ public class Type {
     @Lob
     private String nom;
 
-    public Type(Long id, String nom) {
-        this.id = id;
-        this.nom = nom;
-    }
-
-
-    public Long getId() {
-        return id;
-    }
-
-    public Type() {
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public void setNom(String nom) {
-        this.nom = nom;
-    }
-
-    public String getNom() {
-        return nom;
-    }
-
-
+    @OneToMany(mappedBy = "type")
+    private List<Tutorial> tutorials;
 
 }
