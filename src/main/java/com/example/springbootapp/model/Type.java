@@ -15,10 +15,11 @@ public class Type {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     @Lob
     private String nom;
 
-    @OneToMany(mappedBy = "type")
+    @OneToMany
     private List<Tutorial> tutorials;
 
 }

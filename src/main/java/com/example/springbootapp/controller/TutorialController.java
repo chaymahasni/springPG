@@ -53,7 +53,7 @@ public class TutorialController {
 
     @PostMapping("/tutorials")
     public ResponseEntity<Tutorial> createTutorial(@RequestBody Tutorial tutorial) {
-        Tutorial _tutorial = tutorialRepository.save(Tutorial.builder().title(tutorial.getTitle()).description(tutorial.getDescription()).published(true).build());
+        Tutorial _tutorial = tutorialRepository.save(Tutorial.builder().title(tutorial.getTitle()).description(tutorial.getDescription()).build());
         return new ResponseEntity<>(_tutorial, HttpStatus.CREATED);
     }
 
@@ -65,7 +65,6 @@ public class TutorialController {
             Tutorial _tutorial = tutorialData.get();
             _tutorial.setTitle(tutorial.getTitle());
             _tutorial.setDescription(tutorial.getDescription());
-            _tutorial.setPublished(tutorial.isPublished());
             return new ResponseEntity<>(tutorialRepository.save(_tutorial), HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);

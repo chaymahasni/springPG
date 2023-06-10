@@ -26,13 +26,13 @@ public class TypeController {
     @Autowired
     private TypeRepository typeRepository;
 
-    @GetMapping("/tutorials/{tutorialId}/types")
+  /*  @GetMapping("/tutorials/{tutorialId}/types")
     public ResponseEntity<Type> getAllTypesByTutorialId(@PathVariable(value = "tutorialId") Long tutorialId) {
         Tutorial tutorial = tutorialRepository.findById(tutorialId)
                 .orElseThrow(() -> new ResourceNotFoundException("Not found Tutorial with id = " + tutorialId));
 
         return new ResponseEntity<>(tutorial.getType(), HttpStatus.OK);
-    }
+    }*/
 
     @GetMapping("/types/{id}")
     public ResponseEntity<Type> getTypesByTutorialId(@PathVariable(value = "id") Long id) {

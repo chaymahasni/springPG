@@ -30,8 +30,6 @@ public class Tutorial {
     @Column(name = "description")
     private String description;
 
-    @Column(name = "published")
-    private boolean published;
 
     /*
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
@@ -39,8 +37,6 @@ public class Tutorial {
     private List<Type> types;
     */
 
-    @ManyToOne
-    private Type type;
 
 
 }
