@@ -11,7 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-@CrossOrigin(origins = "http://localhost:8081")
+@CrossOrigin(origins = "http://localhost:8081") // port du frontend (Angular)
 @RestController
 @RequestMapping("/api")
 public class TutorialController {
@@ -50,14 +50,11 @@ public class TutorialController {
         }
     }
 
-    @PostMapping("/tutorialsAdd")
+
+    @PostMapping("/tutorials")
     public ResponseEntity<Tutorial> createTutorial(@RequestBody Tutorial tutorial) {
-        try {
-            Tutorial t = tutorialRepository.save(tutorial);
-            return new ResponseEntity<>(t, HttpStatus.CREATED);
-        } catch (Exception e) {
-            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+        Tutorial _tutorial = tutorialRepository.save(Tutorial.builder().title(tutorial.getTitle()).description(tutorial.getDescription()).build());
+        return new ResponseEntity<>(_tutorial, HttpStatus.CREATED);
     }
 
     @PutMapping("/tutorials/{id}")
@@ -68,7 +65,6 @@ public class TutorialController {
             Tutorial _tutorial = tutorialData.get();
             _tutorial.setTitle(tutorial.getTitle());
             _tutorial.setDescription(tutorial.getDescription());
-            _tutorial.setPublished(tutorial.isPublished());
             return new ResponseEntity<>(tutorialRepository.save(_tutorial), HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -96,17 +92,4 @@ public class TutorialController {
 
     }
 
-    @GetMapping("/tutorials/published")
-    public ResponseEntity<List<Tutorial>> findByPublished() {
-        try {
-            List<Tutorial> tutorials = tutorialRepository.findByPublished(true);
-
-            if (tutorials.isEmpty()) {
-                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-            }
-            return new ResponseEntity<>(tutorials, HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
 }

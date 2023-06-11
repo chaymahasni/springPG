@@ -26,14 +26,13 @@ public class TypeController {
     @Autowired
     private TypeRepository typeRepository;
 
-    @GetMapping("/tutorials/{tutorialId}/types")
-    public ResponseEntity<List<Type>> getAllTypesByTutorialId(@PathVariable(value = "tutorialId") Long tutorialId) {
+  /*  @GetMapping("/tutorials/{tutorialId}/types")
+    public ResponseEntity<Type> getAllTypesByTutorialId(@PathVariable(value = "tutorialId") Long tutorialId) {
         Tutorial tutorial = tutorialRepository.findById(tutorialId)
                 .orElseThrow(() -> new ResourceNotFoundException("Not found Tutorial with id = " + tutorialId));
 
-        List<Type> types = new ArrayList<>(tutorial.getTypes());
-        return new ResponseEntity<>(types, HttpStatus.OK);
-    }
+        return new ResponseEntity<>(tutorial.getType(), HttpStatus.OK);
+    }*/
 
     @GetMapping("/types/{id}")
     public ResponseEntity<Type> getTypesByTutorialId(@PathVariable(value = "id") Long id) {
@@ -42,17 +41,33 @@ public class TypeController {
 
         return new ResponseEntity<>(type, HttpStatus.OK);
     }
-
+/*
     @PostMapping("/tutorials/{tutorialId}/comments")
     public ResponseEntity<Type> createComment(@PathVariable(value = "tutorialId") Long tutorialId,
                                                  @RequestBody Type commentRequest) {
         Type type = tutorialRepository.findById(tutorialId).map(tutorial -> {
-            tutorial.getTypes().add(commentRequest);
+            tutorial.getType().add(commentRequest);
             return typeRepository.save(commentRequest);
         }).orElseThrow(() -> new ResourceNotFoundException("Not found Tutorial with id = " + tutorialId));
 
         return new ResponseEntity<>(type, HttpStatus.CREATED);
     }
+    */
+
+
+    @PostMapping("/addTypeAndTutorial")
+    public ResponseEntity<Type> createTypeWithTutorials(@RequestBody Type type) {
+        Type newtype = Type.builder().nom(type.getNom()).build();
+        List<Tutorial> tutorials = new ArrayList<Tutorial>();
+        tutorials = type.getTutorials();
+        tutorials.forEach(tutorial -> {
+            newtype.getTutorials().add(tutorial);
+        });
+        typeRepository.save(newtype);
+        return new ResponseEntity<>(newtype, HttpStatus.CREATED);
+    }
+
+
     @PutMapping("/types/{id}")
     public ResponseEntity<Type> updateType(@PathVariable("id") long id, @RequestBody Type typeRequest) {
         Type type = typeRepository.findById(id)
@@ -69,13 +84,15 @@ public class TypeController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
+    /*
     @DeleteMapping("/tutorials/{tutorialId}/types")
     public ResponseEntity<HttpStatus> deleteAllTypesOfTutorial(@PathVariable(value = "tutorialId") Long tutorialId) {
         if (!tutorialRepository.existsById(tutorialId)) {
             throw new ResourceNotFoundException("Not found Tutorial with id = " + tutorialId);
         }
 
-       // typeRepository.deleteByTutorialId(tutorialId);
+        typeRepository.deleteByTutorialId(tutorialId);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
+    */
 }
