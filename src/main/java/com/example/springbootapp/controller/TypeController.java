@@ -54,6 +54,20 @@ public class TypeController {
     }
     */
 
+
+    @PostMapping("/addTypeAndTutorial")
+    public ResponseEntity<Type> createTypeWithTutorials(@RequestBody Type type) {
+        Type newtype = Type.builder().nom(type.getNom()).build();
+        List<Tutorial> tutorials = new ArrayList<Tutorial>();
+        tutorials = type.getTutorials();
+        tutorials.forEach(tutorial -> {
+            newtype.getTutorials().add(tutorial);
+        });
+        typeRepository.save(newtype);
+        return new ResponseEntity<>(newtype, HttpStatus.CREATED);
+    }
+
+
     @PutMapping("/types/{id}")
     public ResponseEntity<Type> updateType(@PathVariable("id") long id, @RequestBody Type typeRequest) {
         Type type = typeRepository.findById(id)
@@ -70,13 +84,15 @@ public class TypeController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
+    /*
     @DeleteMapping("/tutorials/{tutorialId}/types")
     public ResponseEntity<HttpStatus> deleteAllTypesOfTutorial(@PathVariable(value = "tutorialId") Long tutorialId) {
         if (!tutorialRepository.existsById(tutorialId)) {
             throw new ResourceNotFoundException("Not found Tutorial with id = " + tutorialId);
         }
 
-       // typeRepository.deleteByTutorialId(tutorialId);
+        typeRepository.deleteByTutorialId(tutorialId);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
+    */
 }

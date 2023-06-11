@@ -9,6 +9,4 @@ import java.util.List;
 @Repository
 public interface TypeRepository extends JpaRepository<Type, Long> {
 
-   // void deleteByTutorialId(Long tutorialId);
-
 }
